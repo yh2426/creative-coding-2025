@@ -39,3 +39,4 @@
 
 
 > This quote stood out to me becasue it reminds me that just using technology is not enough, we also need to understand how technology shoapes our thinking and behavior. I agree with it, sinch people often adopt new apps or tools quickly but don't stop to ask how they influencing us. For learning programming, this make me understand how system works, and gainning the power to shape technology. 
+
