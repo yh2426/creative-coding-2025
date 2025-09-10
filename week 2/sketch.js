@@ -1,10 +1,10 @@
 
 
-function setup() {
+function setup() { // runs once at the start
   createCanvas(windowWidth, windowHeight);
   
 }
 
-function draw() {
+function draw() { // runs in a loop after setup
   
 }
