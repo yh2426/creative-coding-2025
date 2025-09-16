@@ -16,4 +16,13 @@ function draw() { // runs in a loop after setup
   // circle takes these parameters;
   // x position, y position, diameter
 
+
+  rect(150, 200, 25);
+  // rect takes these parameters:
+  // (x, y, w)
+
+  triangle(200, 200, 180, 250, 250, 250);
+  // (triangle takes these parameter)
+  // (x1, y1, x2, y2, x3, y3)
+
 }
