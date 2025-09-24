@@ -7,6 +7,10 @@ let barHeight; //Height of the top/bottom gray bars
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+
+  function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
 }
 
 function draw() {
