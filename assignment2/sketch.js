@@ -49,7 +49,11 @@ function draw() {
 
     fill(r,g,b); //set fill color from mapped mouse position
     translate(x, y); //move to grid position
-    rotate(rotation); // rotate according to y-axis mapping, the circle is actually rateta based on the rotate function.
+    //rotate according to y-axis mapping, 
+    // the circle is actually rateta based on the rotate function,
+    // but i don't want the page moving when mouse is not presing
+    // so it still looks not changing
+    rotate(rotation); 
     
     if (mouseIsPressed) {  // when mouse is pressed , draw triangle with random.
 
