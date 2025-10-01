@@ -49,12 +49,12 @@ function draw() {
 
     fill(r,g,b); //set fill color from mapped mouse position
     translate(x, y); //move to grid position
-    rotate(rotation); // rotate according to y-axis mapping
-
-    if (mouseIsPressed) {  // when mouse is pressed , draw triangle with random offset
+    rotate(rotation); // rotate according to y-axis mapping, the circle is actually rateta based on the rotate function.
+    
+    if (mouseIsPressed) {  // when mouse is pressed , draw triangle with random.
 
       
-      translate(randomx,randomy);
+    translate(randomx,randomy);
       
       triangle(0, -30, -26, 15, 26, 15);
     } else {  // when mouse is not pressed, draw circle
