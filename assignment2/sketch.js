@@ -58,7 +58,7 @@ function draw() {
     if (mouseIsPressed) {  // when mouse is pressed , draw triangle with random.
 
       
-    translate(randomx,randomy);
+    translate(randomx,randomy);//moving randomly based on the map random function
       
       triangle(0, -30, -26, 15, 26, 15);
     } else {  // when mouse is not pressed, draw circle
