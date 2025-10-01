@@ -35,7 +35,7 @@ function draw() {
     let rotation= map(y, 50, height-50, 0,2*PI);
 
     //amount of random displacement increases with mouseY
-    //(0,0.05） control the the shaking
+    //I've try many different number, and figure out that, 0.05 is the right number that suit my expetation. the number bigger, the shape shake faster, so, (0,0.05） control the the shaking
     //mouse near top more stable; mouse near bottom：more shake
     let randomamount = map(mouseY, 0, height, 0, 0.05);
     let randomx;
