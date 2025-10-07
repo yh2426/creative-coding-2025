@@ -36,8 +36,7 @@ function draw() {
   randomxdisp = random(-y*randomamount,y*randomamount);
   randomydisp = random(-y*randomamount,y*randomamount);
 
-  if(mouseIsPressed==true)
-{  translate(randomxdisp,0);
+  if(mouseIsPressed==true){  translate(randomxdisp,0);
 }
 
 
