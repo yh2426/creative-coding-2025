@@ -1,61 +1,13 @@
-# template
 
----
-
-This is a README file that can be used to describe and document your assignment.
-
-Markdown Cheatsheet (from [https://www.markdownguide.org/cheat-sheet/](https://www.markdownguide.org/cheat-sheet/)):
-
----
-
-# Heading1
-## Heading2
-### Heading3
-#### Heading4
-##### Heading5
-###### Heading6
-
-**bold text**
-
-*italicized text*
-
-~~strikethrough text~~
-
-Ordered List:
-1. First item
-2. Second item
-3. Third item
-
-Unordered List:
-- First item
-- Second item
-- Third item
-
-`short code block`
-
-```
-extended code block
-fun() {
-  return 0
-}
-```
-
-Link:  
-[linked text](https://www.example.com)
-
-
-Image with url:  
-![image description](https://dm-gy-6063-2024f-b.github.io/assets/homework/02/clark-espaco-modulado-00.jpg)
-
-
-Image on repo:  
-![image description](./file-name.jpg)
-
-
-To start a new line, add two spaces at the end of a line, like this:  
-this is a new line.
-
-
-To start a new paragraph, leave an empty line between two lines of text.
-
-This is a new paragraph.
+//This project is about Time as Water in a Measuring tube
+//so the tube and the trapezoid represent the mesuring tube
+//This clock is inspired by the memory of high school science experiments 
+//when liqluid was carefully poured into a measuring cup to observe changes.
+//time itself becomes that liquid.
+//second(): controls a single droplet that falls down
+//minute(): controls the rising blue bar, representing the gradual filling of the tube.
+//hour(): adds small drops resting in the trapezoid base, representing time that has settled — the past hours.
+//I am still considering whether to include 24 drops in total or just 12, representing AM and PM.
+//Maybe changing the background color to reflect day and night and add some graph
+//Also I am thinking of adding a faucet on top and a flame at the bottom. 
+// The faucet would show time flowing in; the flame shows time being consumed. I am sill try to fingure out how to draw it.
