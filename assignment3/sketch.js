@@ -27,7 +27,7 @@ function draw() {
 
   //draw Tube 
   
-  let tubewidth = width*0.1;//let the tube width change based on the screen width.
+  let tubewidth = width*0.08;//let the tube width change based on the screen width.
   let tubeheight = height/4;//tube height change based on the screen height
   let tubex = width/2-tubewidth/2//tubex coordinate
   let tubey = height/2.5-tubeheight/2;//tube y
@@ -43,8 +43,8 @@ function draw() {
   let traptop = tubey + tubeheight; //traptop top height starting point
   let trapheight = tubeheight*0.5; // trap height based on the tubehight. 
   let trapbottom = traptop + trapheight*2; // trap bottom coordinate
-  let trapleftx = tubex - tubewidth;// trap bottom left point
-  let traprightx = tubex + tubewidth + tubewidth;  // trap bottom right point
+  let trapleftx = tubex - tubewidth*1.5;// trap bottom left point
+  let traprightx = tubex + tubewidth + tubewidth*1.5;  // trap bottom right point
 
   beginShape();
   vertex(tubex, traptop);             // topleft
@@ -123,9 +123,9 @@ if (h == 0) {
  fill("rgba(113, 197, 245, 1)");
 
  let centerX = tubex + tubewidth/2;
- let centerY = trapbottom - tubeheight/3;
- let radius = tubewidth/4;
- let circleD = tubewidth/9;
+ let centerY = trapbottom - tubeheight/2;
+ let radius = tubewidth/2;
+ let circleD = tubewidth/5;
 
  for(let i =0;i<dropCount; i++){
   let theta = i * (360 / 12); // 每个角度
