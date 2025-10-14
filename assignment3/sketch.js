@@ -42,7 +42,7 @@ function draw() {
 
   let traptop = tubey + tubeheight; //traptop top height starting point
   let trapheight = tubeheight*0.5; // trap height based on the tubehight. 
-  let trapbottom = traptop + trapheight*1.5; // trap bottom coordinate
+  let trapbottom = traptop + trapheight*2; // trap bottom coordinate
   let trapleftx = tubex - tubewidth;// trap bottom left point
   let traprightx = tubex + tubewidth + tubewidth;  // trap bottom right point
 
