@@ -19,9 +19,12 @@ function setup() {
 }
 
 function draw() {
+  
   background("#c59560ff");//background clold
   //show current mouse coordinates
   text(mouseX + "," + mouseY, 5, 15); 
+  
+  
 
   
 
@@ -115,7 +118,7 @@ if (h >= 12) {
   h = h - 12;
 }
 if (h == 0) {
-  h = 12; // 特别处理：12点显示满圈
+  h = 12; //12点显示满圈
 }
  let dropCount = h ; // 当前显示多少个球（12小时循环）
 
