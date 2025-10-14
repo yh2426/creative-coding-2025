@@ -42,7 +42,7 @@ function draw() {
 
   let traptop = tubey + tubeheight; //traptop top height starting point
   let trapheight = tubeheight*0.5; // trap height based on the tubehight. 
-  let trapbottom = traptop + trapheight; // trap bottom coordinate
+  let trapbottom = traptop + trapheight*1.5; // trap bottom coordinate
   let trapleftx = tubex - tubewidth;// trap bottom left point
   let traprightx = tubex + tubewidth + tubewidth;  // trap bottom right point
 
@@ -107,9 +107,11 @@ function draw() {
 
   }
   pop();
+
+//water drops hour
   
- let h = hour(); // 当前小时
- if (h >= 12) {
+let h = hour(); // 当前小时
+if (h >= 12) {
   h = h - 12;
 }
 if (h == 0) {
@@ -121,7 +123,7 @@ if (h == 0) {
  fill("rgba(113, 197, 245, 1)");
 
  let centerX = tubex + tubewidth/2;
- let centerY = trapbottom - tubeheight/4;
+ let centerY = trapbottom - tubeheight/3;
  let radius = tubewidth/4;
  let circleD = tubewidth/9;
 
