@@ -19,9 +19,11 @@ function setup() {
 }
 
 function draw() {
-  background("rgba(94, 94, 94, 1)");//background clold
+  background("#c59560ff");//background clold
   //show current mouse coordinates
   text(mouseX + "," + mouseY, 5, 15); 
+
+  
 
   //draw Tube 
   
@@ -106,22 +108,77 @@ function draw() {
   }
   pop();
   
-// drops represent hour
-  let h = hour(); //current hour
-  let dropCount = h; 
-
-// 
-  randomSeed(h);//fixes the random sequence so that the drop will remain in the same position
-  noStroke();
-
-// random drop
-  for (let i = 0; i < dropCount; i++) {
-    let x = random(tubex - tubewidth*0.3, tubex + tubewidth+tubewidth*0.3); // inside the trapl width
-    let y = random(bottomY+tubeheight*0.3, bottomY + tubeheight*0.4); // inside the trap height
-    fill("rgba(113, 197, 245, 1)");
-    ellipse(x, y, tubewidth/5);
-  }
+ let h = hour(); // 当前小时
+ if (h >= 12) {
+  h = h - 12;
 }
+if (h == 0) {
+  h = 12; // 特别处理：12点显示满圈
+}
+ let dropCount = h ; // 当前显示多少个球（12小时循环）
+
+ noStroke();
+ fill("rgba(113, 197, 245, 1)");
+
+ let centerX = tubex + tubewidth/2;
+ let centerY = trapbottom - tubeheight/4;
+ let radius = tubewidth/4;
+ let circleD = tubewidth/9;
+
+ for(let i =0;i<dropCount; i++){
+  let theta = i * (360 / 12); // 每个角度
+  let x = centerX+ cos(radians(theta)) * radius;
+  let y = centerY+ sin(radians(theta)) * radius;
+  circle(x, y, circleD);
+ }
+
+noStroke();
+
+
+// 火焰位置：在梯形底下中间
+let fireSpacing = tubewidth; // 火焰之间的水平间距
+let fireStartX = tubex + tubewidth/2 - fireSpacing; // 最左边火焰起点
+
+for (let i = 0; i < 3; i++) {
+  let firetopX = fireStartX + i * fireSpacing;
+  let firetopY = trapbottom+random(0,5);
+
+  // 最外层火焰 - 橙色
+  fill("rgba(253, 173, 82, 1)");
+  triangle(firetopX, firetopY + 20, firetopX - tubewidth/2, firetopY + trapheight, firetopX + tubewidth/2, firetopY + trapheight);
+
+  // 中层火焰 - 黄色
+  fill("rgba(252, 255, 97, 1)");
+  triangle(firetopX, firetopY + 40, firetopX - tubewidth/2 + 10, firetopY + trapheight, firetopX + tubewidth/2 - 10, firetopY + trapheight);
+
+  // 内层火焰 - 红色
+  fill("rgba(250, 92, 92, 1)");
+  triangle(firetopX, firetopY + 80, firetopX - tubewidth/2 + 30, firetopY + trapheight, firetopX + tubewidth/2 - 30, firetopY + trapheight);
+  }
+
+
+//Facucet
+let fcenterX = tubex + tubewidth / 2;
+let fctopY = tubey - 60;
+
+// 水平管道
+fill(80);
+rect(tubex, fctopY, tubewidth, 15, 5);
+
+// 竖直出水口
+fill(100);
+rect(fcenterX - 10, fctopY + 15, 20, 25, 5);
+
+// 龙头把手（小圆圈）
+fill(150);
+ellipse(fcenterX, fctopY, 20);
+  
+}
+
+
+
+
+
  
 
    
