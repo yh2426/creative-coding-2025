@@ -21,7 +21,7 @@ function setup() {
 }
 
 function draw() {
-  background("rgba(244, 225, 161, 0.94)");//background yello colore
+  background("rgba(255, 185, 144, 0.94)");//background 
   //add text  like a menu
   fill(0); //black
   textSize(18); //font size
@@ -109,7 +109,8 @@ class Burger{
 
     //Draw each layer from top to bottom
 
-    for(let i = 0;i<this.layers.length; i++){
+    for(let i = 0;i<this.layers.length; i++){//the .length is automatically set depending on 
+    // how many items are inside the layers array
      let layer = this.layers[i];//
 
      if (layer ==="lettuce"){//define lettuce layer parameter
