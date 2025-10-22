@@ -70,7 +70,7 @@ class Burger{
 
     //Draw the top bun
     fill("rgba(199, 148, 46, 1)");//set the bun color, light brown
-    arc(0,-h,this.size, h*4, PI, 0);//I use the arc function to draw the halp circle so make it looks like a bun.
+    arc(0,-h,this.size, h*4, PI, 0,CHORD);//I use the arc function to draw the halp circle so make it looks like a bun.
     //-h make it more sensable, beore was h, but too close to the patty. this.size is the width of the bun, height *4 makes it looks like a dome shape.
     //PI start angle 180 degree, I tried many differnt angle and start 180 is more clear and easy to draw, end angle to 0 degree. so this willl draws a half circle
 
