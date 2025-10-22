@@ -3,7 +3,8 @@ let burgers = [];//burger array
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  burgers[0] = new Burger(300, 300, 100, 4);//only for testing
+   burgers[0] = new Burger(300, 300, 100, 4);//only for testing
+  
 
   
 }
