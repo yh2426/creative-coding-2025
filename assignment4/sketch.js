@@ -9,7 +9,7 @@ function setup() {
 }
 
 function draw() {
-  background("rgba(245, 220, 137, 0.94)");//background yello colore
+  background("rgba(244, 225, 161, 0.94)");//background yello colore
   
   for(let i = 0; i<burgers.length;i++){//drawing a burger with for loop
   
