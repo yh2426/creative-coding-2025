@@ -25,7 +25,7 @@ function draw() {
   let yinqiGhostMoveY = sin(yinqiGhostTheta) * yinqiGhostYRadius;
 
   // === 幽灵身体 ===
-  fill(255);s
+  fill(255);
   ellipse(yinqiGhostX + yinqiGhostMoveX, yinqiGhostY + yinqiGhostMoveY, 100, 120);
   rect(yinqiGhostX - 50 + yinqiGhostMoveX, yinqiGhostY + yinqiGhostMoveY, 100, 80, 50);
 
