@@ -1,12 +1,19 @@
-// This sketch makes a candy smoothly move around the canvas using lerp().
-// The candy moves from one random target position to another 
-
+// This sketch makes a candy move around the canvas using the lerp() function.
+// The candy moves from one random target position to another every second.
 
 let yinqiCandyX;// Current X position of the candy
 let yinqiCandyY;// Current Y position 
+
+//Target position where the candy is moving towards
 let yinqiTargetX;// Target X position
 let yinqiTargetY;// Target Y position
 let yinqiSpeed = 0.02;// Speed of lerp，larger = faster
+
+let yinqiLerpAmt = 0;// Progress from 0 to 1
+let yinqiPrevSecond = 0;// used to detect when a new second begins
+let yinqiStartX;// Starting X
+let yinqiStartY;// Starting Y
+
 
 function setup() {
   createCanvas(400, 400);
@@ -31,26 +38,33 @@ function draw() {
   yinqiCandyY = lerp(yinqiCandyY, yinqiTargetY, yinqiSpeed);
 
   // Draw the candy
-  push(); // Save the current coordinate 
-  translate(yinqiCandyX, yinqiCandyY);// Move drawing origin to candy position
-
+  push();// Save the current coordinate 
 
   // Candy wrapping on both sides
   // Two triangles represent the twisted ends of the wrapper.
-  fill(255, 160, 180);//wrapper light pink color
-  triangle(-50, 0, -70, -20, -70, 20); //Left
-  triangle(50, 0, 70, -20, 70, 20);// Right
+  fill("rgba(255, 160, 180, 1)");//wrapper light pink color
+  triangle(yinqiCandyX - 50, yinqiCandyY,yinqiCandyX - 70, yinqiCandyY - 20, yinqiCandyX - 70, yinqiCandyY + 20); //Left
+  triangle(yinqiCandyX + 50, yinqiCandyY,yinqiCandyX + 70, yinqiCandyY - 20, yinqiCandyX + 70, yinqiCandyY + 20);// Right
 
   // Main part of the Candy
-  fill(255, 180, 200);
-  ellipse(0, 0, 100, 60);
-
+  fill("rgba(255, 180, 200, 1)");
+  ellipse(yinqiCandyX, yinqiCandyY, 100, 60);
   pop();
 
-  // dist() function measures the distance between the current and target positions.
-  // If the candy is close enough < 1 pixel, choose a new random target
-  if (dist(yinqiCandyX, yinqiCandyY, yinqiTargetX, yinqiTargetY) < 1) {
+  // Update lerp amount
+  yinqiLerpAmt += yinqiSpeed;//this controls how fast can reach the target
+  yinqiLerpAmt = constrain(yinqiLerpAmt, 0, 1);// constrain is a function that keeps a value between a certain range
+   
+  // I learn this from week 6 example
+  // The second() function gives the current second (0–59)
+  if (yinqiPrevSecond != second()) {
+    yinqiPrevSecond = second();
+    //Set new target
+    yinqiStartX = yinqiCandyX;
+    yinqiStartY = yinqiCandyY;
     yinqiTargetX = random(width);
     yinqiTargetY = random(height);
+
+    yinqiLerpAmt = 0; //Restart
   }
 }
