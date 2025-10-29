@@ -1,53 +1,54 @@
-let yinqiCandyX;      // 糖果当前位置 X
-let yinqiCandyY;      // 糖果当前位置 Y
-let yinqiTargetX;     // 目标位置 X
-let yinqiTargetY;     // 目标位置 Y
-let yinqiSpeed = 0.02; // lerp 插值速度
+// This sketch makes a candy smoothly move around the canvas using lerp().
+// The candy moves from one random target position to another 
+
+
+let yinqiCandyX;// Current X position of the candy
+let yinqiCandyY;// Current Y position 
+let yinqiTargetX;// Target X position
+let yinqiTargetY;// Target Y position
+let yinqiSpeed = 0.02;// Speed of lerp，larger = faster
 
 function setup() {
   createCanvas(400, 400);
   noStroke();
-  rectMode(CENTER);
+  rectMode(CENTER);// Draw rectangles and triangles from the center
 
-  // 初始位置
+  // Initial positions
+  // Start the candy at random place 
   yinqiCandyX = random(width);
   yinqiCandyY = random(height);
 
-  // 随机目标点
+  // Pick an random target position
   yinqiTargetX = random(width);
   yinqiTargetY = random(height);
 }
 
 function draw() {
-  background(255, 220, 235);
+  background("rgba(255, 220, 235, 1)");// light pink background
 
-  // 用 lerp 平滑移动
+  // Smove the candy toward the target using lerp()
   yinqiCandyX = lerp(yinqiCandyX, yinqiTargetX, yinqiSpeed);
   yinqiCandyY = lerp(yinqiCandyY, yinqiTargetY, yinqiSpeed);
 
-  // 绘制糖果主体
-  push();
-  translate(yinqiCandyX, yinqiCandyY);
+  // Draw the candy
+  push(); // Save the current coordinate 
+  translate(yinqiCandyX, yinqiCandyY);// Move drawing origin to candy position
 
-  // 糖果旋转一点点（轻微摆动）
-  rotate(sin(frameCount * 0.05) * 0.1);
 
-  // === 两边包装纸 ===
-  fill(255, 160, 180);
-  triangle(-50, 0, -70, -20, -70, 20); // 左边
-  triangle(50, 0, 70, -20, 70, 20);   // 右边
+  // Candy wrapping on both sides
+  // Two triangles represent the twisted ends of the wrapper.
+  fill(255, 160, 180);//wrapper light pink color
+  triangle(-50, 0, -70, -20, -70, 20); //Left
+  triangle(50, 0, 70, -20, 70, 20);// Right
 
-  // === 糖果主体 ===
+  // Main part of the Candy
   fill(255, 180, 200);
   ellipse(0, 0, 100, 60);
 
-  // === 中心白圈 ===
-  fill(255);
-  ellipse(0, 0, 30, 30);
-
   pop();
 
-  // 当糖果接近目标点时，换新的随机目标
+  // dist() function measures the distance between the current and target positions.
+  // If the candy is close enough < 1 pixel, choose a new random target
   if (dist(yinqiCandyX, yinqiCandyY, yinqiTargetX, yinqiTargetY) < 1) {
     yinqiTargetX = random(width);
     yinqiTargetY = random(height);

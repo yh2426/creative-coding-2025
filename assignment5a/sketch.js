@@ -1,39 +1,46 @@
-let yinqiGhostX = 200;
-let yinqiGhostY = 200;
-let yinqiGhostNoiseT = 0; // 控制角度的噪声时间
-let yinqiGhostNoiseR = 50; // 控制半径的噪声范围
+// This sketch creates a softly floating ghost using noise(), 
+// sin(), and cos() functions.
+// The motion logic is adapted from the "EyeBall" example (Week 8C),    
+// In my version, I applied the same logic to move the whole ghost 
+// smoothly across the canvas.
+
+let yinqiGhostX = 200;// X position of the ghost (center point)
+let yinqiGhostY = 200;// Y position of the ghost (center point)
+let yinqiGhostNoiseT = 0; // Noise variable
+
 
 function setup() {
   createCanvas(400, 400);
-  angleMode(DEGREES); // 角度模式（方便 0-360° 控制）
-  noStroke();
+  angleMode(DEGREES);//
+  noStroke();// remove outlines of the ghost
 }
 
 function draw() {
-  background(20, 24, 40);
+  background(0); // background black
 
-  // 增加噪声时间
-  yinqiGhostNoiseT += 0.01;
+  yinqiGhostNoiseT += 0.01;// By adding 0.01 each frame, theis will changes gradually,
+// making the ghost’s movement smooth.
 
-  // 用 noise 控制角度和半径
-  let yinqiGhostTheta = noise(yinqiGhostNoiseT) * 360; // 角度 0~360°
-  let yinqiGhostXRadius = noise(yinqiGhostNoiseT + 10) * 40; // X 半径范围
-  let yinqiGhostYRadius = noise(yinqiGhostNoiseT + 20) * 30; // Y 半径范围
-
-  // 计算幽灵的漂浮位置
+  //calculate ghost postion by using cos and sin function, learn this from week 8c.
+  //8C is eyemoving, mine see the ghost as the whole eyes position.
+  let yinqiGhostTheta = noise(yinqiGhostNoiseT) * 360;
+  let yinqiGhostXRadius = noise(yinqiGhostNoiseT + 10) * 40; //x, the original function doesn't add 10, but I tried with some fill number by myself
+  //I experimented with adding them and found the movement looks smoother and more natural.
+  let yinqiGhostYRadius = noise(yinqiGhostNoiseT + 20) * 30; //y
   let yinqiGhostMoveX = cos(yinqiGhostTheta) * yinqiGhostXRadius;
   let yinqiGhostMoveY = sin(yinqiGhostTheta) * yinqiGhostYRadius;
 
-  // === 幽灵身体 ===
-  fill(255);
+  //ghost body, one ellipse, and one rect with round coner
+  fill(255);// white color of the ghost
   ellipse(yinqiGhostX + yinqiGhostMoveX, yinqiGhostY + yinqiGhostMoveY, 100, 120);
   rect(yinqiGhostX - 50 + yinqiGhostMoveX, yinqiGhostY + yinqiGhostMoveY, 100, 80, 50);
 
-  // === 幽灵眼睛 ===
+  //ghost eyes
+  //Two small black ellipses
   fill(0);
   ellipse(yinqiGhostX - 15 + yinqiGhostMoveX, yinqiGhostY + yinqiGhostMoveY - 20, 15, 20);
   ellipse(yinqiGhostX + 15 + yinqiGhostMoveX, yinqiGhostY + yinqiGhostMoveY - 20, 15, 20);
 
-  // === 幽灵嘴巴 ===
+  //draw ghost mouth
   ellipse(yinqiGhostX + yinqiGhostMoveX, yinqiGhostY + yinqiGhostMoveY + 10, 20, 10);
 }
