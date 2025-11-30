@@ -3,6 +3,8 @@ let video;
 let hands = [];
 let heartColors = [];
 
+let heartbeat;
+
 function preload() {
   handPose = ml5.handPose();
   heartbeat = loadSound('heartbeat.wav');
@@ -16,9 +18,7 @@ function setup() {
   handPose.detectStart(video, gotHands);
   for (let i = 0; i < 2; i++) {
   heartColors[i] = color(random(255), random(255), random(255), 200);
-
-  //userStartAudio();
-   //heartbeat.loop();
+  heartbeat.loop();
 
   }
 }
@@ -30,26 +30,35 @@ function draw() {
   let vw = 160;
   let vh = 120;
   image(video, width - vw - 10, height - vh - 10, vw, vh);
+
+  // 如果至少有两只手
   if (hands.length >= 2) {
-  // 两只手
-  let hand1 = hands[0];
-  let hand2 = hands[1];
 
-  let center1 = getHandCenter(hand1);
-  let center2 = getHandCenter(hand2);
+    let hand1 = hands[0];
+    let hand2 = hands[1];
 
-  if (center1 && center2) {
-    let d = dist(center1.x, center1.y, center2.x, center2.y);
+    let center1 = getHandCenter(hand1);
+    let center2 = getHandCenter(hand2);
 
-    if (d < 100) {
-      // 画一个大红心在屏幕中央
-      drawHeart(width / 2, height / 2, 120, color(255, 0, 0, 255));
-      return; // 不继续执行下面的绘制小心逻辑
+    if (center1 && center2) {
+
+      // 计算两只手之间的距离
+      let d = dist(center1.x, center1.y, center2.x, center2.y);
+
+      // 心跳速度随距离变化
+      let speed = map(d, 50, 400, 2, 0.5);
+      speed = constrain(speed, 0.5, 2);
+      heartbeat.rate(speed);
+
+      // 两只手很靠近时画一个大心
+      if (d < 100) {
+        drawHeart(width / 2, height / 2, 120, color(255, 0, 0, 255));
+        return; 
+      }
     }
   }
-}
 
-  // 遍历所有手部
+  // 遍历所有手部（画小心）
   for (let i = 0; i < hands.length; i++) {
     let hand = hands[i];
 
@@ -66,16 +75,13 @@ function draw() {
     let index = hand.index_finger_tip;
 
     if (thumb && index) {
-      // 计算中点与距离
       let centerX = (thumb.x + index.x) / 2;
       let centerY = (thumb.y + index.y) / 2;
       let pinch = dist(thumb.x, thumb.y, index.x, index.y);
       let size = pinch / 2;
 
       let colorVal = heartColors[i];
-
       drawHeart(centerX, centerY, size, colorVal);
-
     }
   }
 }
@@ -107,8 +113,7 @@ function getHandCenter(hand) {
   }
   return null;
 }
-
 function mousePressed() {
-  heartbeat.play();
-  }
+  heartbeat.play();   // 再额外播放一次
+}
 
