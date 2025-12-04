@@ -56,12 +56,12 @@ let vy = height - vh - 10;
       // 计算两只手之间的距离
       let d = dist(center1.x, center1.y, center2.x, center2.y);
 
-      // 心跳速度随距离变化
+      // 心跳速度随距离变
       let speed = map(d, 50, 400, 2, 0.5);
       speed = constrain(speed, 0.5, 2);
       heartbeat.rate(speed);
 
-      // 两只手很靠近时画一个大心
+      // get a big heart when two hands getting closer
       if (d < 100) {
         drawHeart(width / 2, height / 2, 120, color(255, 0, 0, 255));
         return; 
@@ -73,7 +73,7 @@ let vy = height - vh - 10;
   //for (let i = 0; i < hands.length; i++) {
    // let hand = hands[i];
 
-    // 绘制关键点
+    
    // for (let j = 0; j < hand.keypoints.length; j++) {
       //let keypoint = hand.keypoints[j];
       //fill(0, 255, 0);
@@ -83,7 +83,7 @@ let vy = height - vh - 10;
     
    // }
 
- // 为每只手绘制一个小爱心（根据拇指和食指）
+ // draw heart based on thumbn and index
   for (let i = 0; i < hands.length; i++) {
     let hand = hands[i];
     let thumb = hand.thumb_tip;
