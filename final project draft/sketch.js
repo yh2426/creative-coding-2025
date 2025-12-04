@@ -3,18 +3,22 @@ let video;
 let hands = [];
 let heartColors = [];
 
-let heartbeat;
 
+
+let heartbeat;
+// Load the handPose model
 function preload() {
   handPose = ml5.handPose();
   heartbeat = loadSound('heartbeat.wav');
 }
 
 function setup() {
-  createCanvas(640, 480);
+  // Create the webcam video and hide it
+  createCanvas(windowWidth,windowHeight);
   video = createCapture(VIDEO);
-  video.size(640, 480);
+  video.size(windowWidth,windowHeight);
   video.hide();
+  // start detecting hands from the webcam video
   handPose.detectStart(video, gotHands);
   for (let i = 0; i < 2; i++) {
   heartColors[i] = color(random(255), random(255), random(255), 200);
@@ -22,16 +26,23 @@ function setup() {
 
   }
 }
-
 function draw() {
+  // Draw the webcam video
   background("rgba(255, 150, 180, 1)");
+  drawUI(); 
 
   // 摄像头小图
-  let vw = 160;
-  let vh = 120;
-  image(video, width - vw - 10, height - vh - 10, vw, vh);
+let vw = 160;
+let vh = 120;
+let vx = width - vw - 10;
+let vy = height - vh - 10;
+ push();
+ translate(width, 0);
+ scale(-1, 1); // 水平翻转
+ image(video, vx, vy, vw, vh)
+ pop();
 
-  // 如果至少有两只手
+  //at least two hands
   if (hands.length >= 2) {
 
     let hand1 = hands[0];
@@ -58,36 +69,47 @@ function draw() {
     }
   }
 
-  // 遍历所有手部（画小心）
-  for (let i = 0; i < hands.length; i++) {
-    let hand = hands[i];
+  // Draw all the tracked hand points
+  //for (let i = 0; i < hands.length; i++) {
+   // let hand = hands[i];
 
     // 绘制关键点
-    for (let j = 0; j < hand.keypoints.length; j++) {
-      let keypoint = hand.keypoints[j];
-      fill(0, 255, 0);
-      noStroke();
-      circle(keypoint.x, keypoint.y, 10);
-    }
+   // for (let j = 0; j < hand.keypoints.length; j++) {
+      //let keypoint = hand.keypoints[j];
+      //fill(0, 255, 0);
+     // noStroke();
+     // let flippedX = width - keypoint.x;
+//circle(flippedX, keypoint.y, 10);
+    
+   // }
 
-    // 获取拇指与食指
+ // 为每只手绘制一个小爱心（根据拇指和食指）
+  for (let i = 0; i < hands.length; i++) {
+    let hand = hands[i];
     let thumb = hand.thumb_tip;
     let index = hand.index_finger_tip;
 
     if (thumb && index) {
-      let centerX = (thumb.x + index.x) / 2;
+      let thumbX = width - thumb.x;
+      let indexX = width - index.x;
+
+      let centerX = (thumbX + indexX) / 2;
       let centerY = (thumb.y + index.y) / 2;
-      let pinch = dist(thumb.x, thumb.y, index.x, index.y);
+      let pinch = dist(thumbX, thumb.y, indexX, index.y);
       let size = pinch / 2;
 
       let colorVal = heartColors[i];
       drawHeart(centerX, centerY, size, colorVal);
-    }
   }
+ }
+ 
 }
 
-// 处理手势识别结果
+
+
+// Callback function for when handPose outputs data
 function gotHands(results) {
+  
   hands = results;
 }
 
@@ -113,7 +135,20 @@ function getHandCenter(hand) {
   }
   return null;
 }
-function mousePressed() {
-  heartbeat.play();   // 再额外播放一次
+function mousePressed() {//mouse click play sounds
+  heartbeat.play();
+}
+
+function drawUI() {
+  // 标题
+  textAlign(CENTER, CENTER);
+  textSize(32);
+  fill(255);
+  text("Heart Gesture Demo", width / 2, 40);
+
+  // 说明文字
+  textSize(18);
+  fill(255, 230);
+  text("Bring both hands together to create a big heart ❤️", width / 2, height - 40);
 }
 
