@@ -1,94 +1,54 @@
-/*
- * 👋 Hello! This is an ml5.js example made and shared with ❤️.
- * Learn more about the ml5.js project: https://ml5js.org/
- * ml5.js license and Code of Conduct: https://github.com/ml5js/ml5-next-gen/blob/main/LICENSE.md
- *
- * This example demonstrates drawing skeletons on poses for the MoveNet model.
- */
-
+let handPose;
 let video;
-let bodyPose;
-let poses = [];
-let connections;
+let hands = [];
 
 function preload() {
-  // Load the bodyPose model
-  bodyPose = ml5.bodyPose();
+  // Load the handPose model
+  handPose = ml5.handPose();
 }
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
-
-  // Create the video and hide it
+  createCanvas(640, 480);
+  // Create the webcam video and hide it
   video = createCapture(VIDEO);
-  video.size(windowWidth, windowHeight);
+  video.size(640, 480);
   video.hide();
-
-  // Start detecting poses in the webcam video
-  bodyPose.detectStart(video, gotPoses);
-  // Get the skeleton connection information
-  connections = bodyPose.getSkeleton();
+  // start detecting hands from the webcam video
+  handPose.detectStart(video, gotHands);
 }
 
 function draw() {
+  if (!isGameActive) {
+     background(200);//background
+   drawHeart(hintX1, hintY1, 80, color(150));
+   drawHeart(hintX2, hintY2, 80, color(150));
+
+    fill(255, 255, 0);
+    textSize(24);
+    textAlign(CENTER);
+    text("Detected " + hands.length + " hand(s), waiting for the other...", width / 2, height / 2);
+    return;
+  }
+
+
   // Draw the webcam video
   image(video, 0, 0, width, height);
 
-  // Draw the skeleton connections
-  for (let i = 0; i < poses.length; i++) {
-    let pose = poses[i];
-    for (let j = 0; j < connections.length; j++) {
-      let pointAIndex = connections[j][0];
-      let pointBIndex = connections[j][1];
-      let pointA = pose.keypoints[pointAIndex];
-      let pointB = pose.keypoints[pointBIndex];
-      // Only draw a line if both points are confident enough
-      if (pointA.confidence > 0.1 && pointB.confidence > 0.1) {
-        stroke(255, 0, 0);
-        strokeWeight(2);
-        line(pointA.x, pointA.y, pointB.x, pointB.y);
-      }
+  // Draw all the tracked hand points
+  for (let i = 0; i < hands.length; i++) {
+    let hand = hands[i];
+    for (let j = 0; j < hand.keypoints.length; j++) {
+      let keypoint = hand.keypoints[j];
+      fill(0, 255, 0);
+      noStroke();
+      circle(keypoint.x, keypoint.y, 10);
     }
   }
 
-  // Draw all the tracked landmark points
-  for (let i = 0; i < poses.length; i++) {
-    let pose = poses[i];
-    for (let j = 0; j < pose.keypoints.length; j++) {
-      let keypoint = pose.keypoints[j];
-      // Only draw a circle if the keypoint's confidence is bigger than 0.1
-      if (keypoint.confidence > 0.1) {
-        fill(0, 255, 0);
-        noStroke();
-        circle(keypoint.x, keypoint.y, 10);
-      }
-    }
-  }
-  if (poses.length >= 2) {
-    let person1 = poses[0].keypoints[0]; 
-    let person2 = poses[1].keypoints[0]; 
-
-    if (person1.confidence > 0.1 && person2.confidence > 0.1) {
-      
-      let d = dist(person1.x, person1.y, person2.x, person2.y);
-
-      
-      console.log("dis:", d);
-      
-     
-    }
-  }
-  if (poses.length < 2) {
-    fill(255, 0, 0); 
-    noStroke(); 
-    textSize(30);
-    textAlign(CENTER, CENTER); 
-    text("Waiting for 2nd person...", width / 2, 100);
-  }
 }
 
-// Callback function for when bodyPose outputs data
-function gotPoses(results) {
-  // Save the output to the poses variable
-  poses = results;
+// Callback function for when handPose outputs data
+function gotHands(results) {
+  // save the output to the hands variable
+  hands = results;
 }
