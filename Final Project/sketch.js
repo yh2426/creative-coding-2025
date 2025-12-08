@@ -1,94 +1,109 @@
-/*
- * 👋 Hello! This is an ml5.js example made and shared with ❤️.
- * Learn more about the ml5.js project: https://ml5js.org/
- * ml5.js license and Code of Conduct: https://github.com/ml5js/ml5-next-gen/blob/main/LICENSE.md
- *
- * This example demonstrates drawing skeletons on poses for the MoveNet model.
- */
-
+let handPose;
 let video;
-let bodyPose;
-let poses = [];
-let connections;
+let hands = [];
+
+let isGameActive = false; //game locked
 
 function preload() {
-  // Load the bodyPose model
-  bodyPose = ml5.bodyPose();
+  // Load the handPose model
+  handPose = ml5.handPose();
 }
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
-
-  // Create the video and hide it
+  createCanvas(640, 480);
+  // Create the webcam video and hide it
   video = createCapture(VIDEO);
-  video.size(windowWidth, windowHeight);
+  video.size(640, 480);
   video.hide();
+  // start detecting hands from the webcam video
+  handPose.detectStart(video, gotHands);
 
-  // Start detecting poses in the webcam video
-  bodyPose.detectStart(video, gotPoses);
-  // Get the skeleton connection information
-  connections = bodyPose.getSkeleton();
+
+  // Add this if not already:
+  hintX1 = width * 0.3;
+  hintY1 = height * 0.5;
+  hintX2 = width * 0.7;
+  hintY2 = height * 0.5;
 }
 
 function draw() {
-  // Draw the webcam video
+    background(200);
+
+  // Draw webcam video
   image(video, 0, 0, width, height);
 
-  // Draw the skeleton connections
-  for (let i = 0; i < poses.length; i++) {
-    let pose = poses[i];
-    for (let j = 0; j < connections.length; j++) {
-      let pointAIndex = connections[j][0];
-      let pointBIndex = connections[j][1];
-      let pointA = pose.keypoints[pointAIndex];
-      let pointB = pose.keypoints[pointBIndex];
-      // Only draw a line if both points are confident enough
-      if (pointA.confidence > 0.1 && pointB.confidence > 0.1) {
-        stroke(255, 0, 0);
-        strokeWeight(2);
-        line(pointA.x, pointA.y, pointB.x, pointB.y);
-      }
+  // Draw all keypoints
+  for (let i = 0; i < hands.length; i++) {
+    let hand = hands[i];
+    for (let j = 0; j < hand.keypoints.length; j++) {
+      let keypoint = hand.keypoints[j];
+      fill(0, 255, 0);
+      noStroke();
+      circle(keypoint.x, keypoint.y, 10);
     }
   }
 
-  // Draw all the tracked landmark points
-  for (let i = 0; i < poses.length; i++) {
-    let pose = poses[i];
-    for (let j = 0; j < pose.keypoints.length; j++) {
-      let keypoint = pose.keypoints[j];
-      // Only draw a circle if the keypoint's confidence is bigger than 0.1
-      if (keypoint.confidence > 0.1) {
-        fill(0, 255, 0);
-        noStroke();
-        circle(keypoint.x, keypoint.y, 10);
-      }
+  // Draw the two gray heart targets
+  drawHeart(hintX1, hintY1, 80, color(150));// Left gray heart
+  drawHeart(hintX2, hintY2, 80, color(150));// Right gray heart
+
+  // If less than 2 hands are detected, show a waiting message and stop here
+  if (hands.length < 2) {
+    fill(255, 255, 0);
+    textSize(24);
+    textAlign(CENTER);
+    text("Detected " + hands.length + " hand(s), waiting for the other...", width / 2, height / 2);
+    return; // the game exit earl, If fewer than 2 hands are detected.
+    // I use return function to stop the draw() function for this frame.
+    // Without this return, the game might try to keep going without dectecing two hands.
+  }
+
+  // Dectected two hands
+  // check finger tips
+  let hand1 = hands[0];//first hands
+  let hand2 = hands[1];// second hands
+
+  // Index 8 = index_finger_tip in keypoints list
+  let finger1 = hand1.keypoints[8]; // First hand's index fingertip
+  let finger2 = hand2.keypoints[8]; // Second hand's index fingertip
+
+
+
+  if (finger1 && finger2 && !isGameActive) { // Check if both index fingers exist and the game is not yet active
+
+    // each finger has a position(x,y)
+    // I calculate the distance from each finger to each heart 
+    // this game is designed for two players, so each player uses one hand to touch one fo the gray hearts
+    // Becasue I don't know which player is tanding on which side, so I need to consider possible combinations, which hand 1 might be on the left or right also same as hand2.
+    // So i need 4 distances
+    let d1 = dist(finger1.position.x, finger1.position.y, hintX1, hintY1);
+    let d2 = dist(finger2.position.x, finger2.position.y, hintX2, hintY2);
+    let d3 = dist(finger1.position.x, finger1.position.y, hintX2, hintY2);
+    let d4 = dist(finger2.position.x, finger2.position.y, hintX1, hintY1);
+
+    if ((d1 < 150 && d2 < 150) || (d3 < 150 && d4 < 150)) { // After testing different values, 150 seems to be the most reliable distance.
+// It allows the game to trigger easily, but still requires players to be close.
+      isGameActive = true; //run the game
+      print("Game started!");
+    } else { // if hands are not close to the grey hears, show the message
+      fill(255);
+      textSize(20);
+      textAlign(CENTER);
+      text("Move both index fingers to the gray hearts to unlock", width / 2, height / 2 + 100);
     }
   }
-  if (poses.length >= 2) {
-    let person1 = poses[0].keypoints[0]; 
-    let person2 = poses[1].keypoints[0]; 
 
-    if (person1.confidence > 0.1 && person2.confidence > 0.1) {
-      
-      let d = dist(person1.x, person1.y, person2.x, person2.y);
-
-      
-      console.log("dis:", d);
-      
-     
-    }
-  }
-  if (poses.length < 2) {
-    fill(255, 0, 0); 
-    noStroke(); 
-    textSize(30);
-    textAlign(CENTER, CENTER); 
-    text("Waiting for 2nd person...", width / 2, 100);
+  // If game is active, show next stage
+  if (isGameActive) {
+    fill(255);
+    textAlign(CENTER);
+    textSize(20);
+    text("🎉 Game is unlocked! You can continue the interaction...", width / 2, height - 30);
   }
 }
 
-// Callback function for when bodyPose outputs data
-function gotPoses(results) {
-  // Save the output to the poses variable
-  poses = results;
+// Callback function for when handPose outputs data
+function gotHands(results) {
+  // save the output to the hands variable
+  hands = results;
 }
