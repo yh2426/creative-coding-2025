@@ -2,6 +2,8 @@ let handPose;
 let video;
 let hands = [];
 
+let isGameActive = false; //game locked
+
 function preload() {
   // Load the handPose model
   handPose = ml5.handPose();
@@ -15,26 +17,22 @@ function setup() {
   video.hide();
   // start detecting hands from the webcam video
   handPose.detectStart(video, gotHands);
+
+
+  // Add this if not already:
+  hintX1 = width * 0.3;
+  hintY1 = height * 0.5;
+  hintX2 = width * 0.7;
+  hintY2 = height * 0.5;
 }
 
 function draw() {
-  if (!isGameActive) {
-     background(200);//background
-   drawHeart(hintX1, hintY1, 80, color(150));
-   drawHeart(hintX2, hintY2, 80, color(150));
+    background(200);
 
-    fill(255, 255, 0);
-    textSize(24);
-    textAlign(CENTER);
-    text("Detected " + hands.length + " hand(s), waiting for the other...", width / 2, height / 2);
-    return;
-  }
-
-
-  // Draw the webcam video
+  // Draw webcam video
   image(video, 0, 0, width, height);
 
-  // Draw all the tracked hand points
+  // Draw all keypoints
   for (let i = 0; i < hands.length; i++) {
     let hand = hands[i];
     for (let j = 0; j < hand.keypoints.length; j++) {
@@ -45,6 +43,63 @@ function draw() {
     }
   }
 
+  // Draw the two gray heart targets
+  drawHeart(hintX1, hintY1, 80, color(150));// Left gray heart
+  drawHeart(hintX2, hintY2, 80, color(150));// Right gray heart
+
+  // If less than 2 hands are detected, show a waiting message and stop here
+  if (hands.length < 2) {
+    fill(255, 255, 0);
+    textSize(24);
+    textAlign(CENTER);
+    text("Detected " + hands.length + " hand(s), waiting for the other...", width / 2, height / 2);
+    return; // the game exit earl, If fewer than 2 hands are detected.
+    // I use return function to stop the draw() function for this frame.
+    // Without this return, the game might try to keep going without dectecing two hands.
+  }
+
+  // Dectected two hands
+  // check finger tips
+  let hand1 = hands[0];//first hands
+  let hand2 = hands[1];// second hands
+
+  // Index 8 = index_finger_tip in keypoints list
+  let finger1 = hand1.keypoints[8]; // First hand's index fingertip
+  let finger2 = hand2.keypoints[8]; // Second hand's index fingertip
+
+
+
+  if (finger1 && finger2 && !isGameActive) { // Check if both index fingers exist and the game is not yet active
+
+    // each finger has a position(x,y)
+    // I calculate the distance from each finger to each heart 
+    // this game is designed for two players, so each player uses one hand to touch one fo the gray hearts
+    // Becasue I don't know which player is tanding on which side, so I need to consider possible combinations, which hand 1 might be on the left or right also same as hand2.
+    // So i need 4 distances
+    let d1 = dist(finger1.position.x, finger1.position.y, hintX1, hintY1);
+    let d2 = dist(finger2.position.x, finger2.position.y, hintX2, hintY2);
+    let d3 = dist(finger1.position.x, finger1.position.y, hintX2, hintY2);
+    let d4 = dist(finger2.position.x, finger2.position.y, hintX1, hintY1);
+
+    if ((d1 < 150 && d2 < 150) || (d3 < 150 && d4 < 150)) { // After testing different values, 150 seems to be the most reliable distance.
+// It allows the game to trigger easily, but still requires players to be close.
+      isGameActive = true; //run the game
+      print("Game started!");
+    } else { // if hands are not close to the grey hears, show the message
+      fill(255);
+      textSize(20);
+      textAlign(CENTER);
+      text("Move both index fingers to the gray hearts to unlock", width / 2, height / 2 + 100);
+    }
+  }
+
+  // If game is active, show next stage
+  if (isGameActive) {
+    fill(255);
+    textAlign(CENTER);
+    textSize(20);
+    text("🎉 Game is unlocked! You can continue the interaction...", width / 2, height - 30);
+  }
 }
 
 // Callback function for when handPose outputs data
