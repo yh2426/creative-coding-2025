@@ -16,7 +16,7 @@ function setup() {
 }
 
 function draw() {
-  //background(255);
+  background(255);
   currentX = lerp(pX, targetX,lerpAmt);
   currentY = lerp(pY, targetY, lerpAmt);
   circle(currentX, currentY,20);

@@ -31,7 +31,7 @@ function draw() {
   quadRight.displaySketch(myOtherSketch);
 }
 
-function mySketch(pg){ // "pg" refers to each canvas "instance"
+function YHSketch(pg){ // "pg" refers to each canvas "instance"
   pg.clear();
   pg.push();
   // your sketch goes between push and pop. remember to use the 'pg.' prefix for all p5 functions

@@ -140,8 +140,7 @@
         isGameActive = true; //run the game
         print("Game started!");
         heartbeat.play();//sound play when game start
-       } 
-      }
+      } 
     }
 
     // If game is active, show next stage
