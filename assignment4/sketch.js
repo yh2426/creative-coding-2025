@@ -5,7 +5,7 @@
 
 //I chose to create burgers and fries because they’re my favorite food. I often enjoy eating them, 
 // and I even like to make burgers myself at home.This project also connects to a bigger dream 
-// I’ve had for a long time: opening my own fast food restaurant someday.
+// I’ve had for a long time: opening my own fast food restaurant someday
 
 
 
