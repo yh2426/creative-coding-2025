@@ -62,10 +62,6 @@
     if (isFinalHeartShown) {
       drawHeart(width / 2, height / 2, 120, color(255, 0, 0)); // Draw one big red heart in center
       // show text after the heart is formed
-      textAlign(CENTER);
-      textSize(64);
-      fill("rgba(255, 255, 255, 1)");
-      text("LOVE", width / 2, height / 2 + 20);
       // Restart instruction
       textSize(24);
       fill("rgba(255, 255, 255, 0.8)");
