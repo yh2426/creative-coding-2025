@@ -153,10 +153,10 @@
       fill("rgba(251, 251, 43, 1)");
       text("Don't like this color? Pinch it!", width / 2, 100);
       if (hands.length >= 2) {
-    let hand1 = hands[0];
-    let hand2 = hands[1];
-    let index1 = hand1.index_finger_tip;
-    let index2 = hand2.index_finger_tip;
+        let hand1 = hands[0];
+        let hand2 = hands[1];
+        let index1 = hand1.index_finger_tip;
+        let index2 = hand2.index_finger_tip;
 
     if (index1 && index2) {
       let x1 = width - index1.x;
@@ -175,7 +175,7 @@
 
       drawBar(progress); // I draw the progress bar based on the calculated progress value.
 
-      let speed = map(d, 600, 50, 0.5, 2); // Map the distance between hands to a playback speed (closer = faster)
+      let speed = map(d, 600, 300, 0.5, 2); // Map the distance between hands to a playback speed (closer = faster)
       speed = constrain(speed, 0.5, 2);// Limit the playback rate between 0.5x and 2x
       heartbeat.rate(speed);// Set the heartbeat sound playback rate
 
@@ -204,7 +204,7 @@
         
         // Calculate the pinch "distance" between finger and thumb
         let pinch = dist(thumbX, thumb.y, indexX, index.y);
-        let size = pinch / 2;
+        let size = pinch;
 
          // If fingers are pinching closely, change the color of this heart
     if (pinch < 30) {
