@@ -41,7 +41,7 @@
   }
 
   function draw() {
-    background("rgba(255, 200, 220, 1)"); // light pink
+    background("rgba(255, 200, 220, 1)"); // pink
 
     // Draw webcam video
     // I noticed the webcam video is flipped by default, which feels confusing for players.
@@ -126,7 +126,7 @@
       let d3 = dist(fx1, finger1.y, hintX2, hintY2); // finger1 to heart2
       let d4 = dist(fx2, finger2.y, hintX1, hintY1); // finger2 to heart1
 
-      if ((d1 < 80 && d2 < 80) || (d3 < 80 && d4 < 80)) {// After testing different values, 150 seems to be the most reliable distance.
+      if ((d1 < 80 && d2 < 80) || (d3 < 80 && d4 < 80)) {// After testing different values, 80 seems to be the most reliable distance.
       // It allows the game to trigger easily, but still requires players to be close.
         isGameActive = true; //run the game
         heartbeat.play();//sound play when game start
@@ -259,7 +259,7 @@
       heartbeat.stop();
     }
 
-    // Re randomize heart colors
+    // Rerandomize heart colors
     for (let i = 0; i < 2; i++) {
       heartColors[i] = color(random(255), random(255), random(255), 200);
     }
