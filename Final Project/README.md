@@ -8,8 +8,6 @@ At first, I wanted to use BodyPose for full-body tracking. However, getting two 
 
 I also had plans to make the game work over a network using WebSockets. This way, two people could play from different places with their own cameras. The interaction would not depend on being in the same room. I could not finish that part because of time limitations and other class projects, but I hope to continue working on it in the future.
 
----
-
 ## Instructions for Interaction
 
 ### Step 1: Start the Game  
