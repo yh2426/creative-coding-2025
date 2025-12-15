@@ -32,3 +32,15 @@ Once you get close enough, a big red heart will appear in the center of the scre
 ### Step 5: Restart  
 When the red heart shows up, the game is complete.  
 Click anywhere on the screen to start over.
+
+
+
+
+### reference
+
+https://editor.p5js.org/enickles/sketches/rJ9j1sx0M
+https://editor.p5js.org/cs6240/sketches/0Z1Ao2t_Z
+https://p5js.org/reference/p5/bezierVertex/
+https://editor.p5js.org/ml5/sketches/DNbSiIYKB
+https://editor.p5js.org/ml5/sketches/QGH3dwJ1A
+https://craigfahner.github.io/CC2025/week11/
