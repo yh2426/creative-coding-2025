@@ -3,24 +3,21 @@
   let hands = [];
   let heartbeat;
 
-  let isGameActive = false; //game locked
+  let isGameActive = false; // controls if the game is unlocked and running.
 
-  let hintX1, hintY1, hintX2, hintY2;
+  let hintX1, hintY1, hintX2, hintY2; // Positions for the two gray heart targets
+    
+  let heartColors = []; // One color per hand, I used to draw hearts with different colors per player.
 
-  let leftHeartTouched = false;
-  let rightHeartTouched = false;
+  let isFinalHeartShown = false; // If true, stop drawing individual hearts and show one big red heart.
 
-  let heartColors = []; // One color per hand
-
-  let isFinalHeartShown = false; // If true, stop drawing individual hearts and show one big red heart
-
-  let showRestartText = false; // I use this to show restart message after final heart
+  let showRestartText = false; // I use this to show restart message after final heart.
 
 
   function preload() {
     // Load the handPose model
     handPose = ml5.handPose();
-    heartbeat = loadSound("heartbeat.mp3");
+    heartbeat = loadSound("heartbeat.mp3");//heartbeat sound
   }
 
   function setup() {
@@ -32,17 +29,15 @@
     // start detecting hands from the webcam video
     handPose.detectStart(video, gotHands);
 
-    heartbeat.loop();
-
-    // Add this if not already:
-    hintX1 = width * 0.3;
-    hintY1 = height * 0.5;
-    hintX2 = width * 0.7;
-    hintY2 = height * 0.5;
+    heartbeat.loop();//loop the heartbeat sound
+    hintX1 = width * 0.3; // X position for the left gray heart
+    hintY1 = height * 0.5; // Y position for the left gray heart
+    hintX2 = width * 0.7; // X position for the right gray heart
+    hintY2 = height * 0.5; // Y position for the right gray heart
 
     for (let i = 0; i < 2; i++) {//heart color, random color
     heartColors[i] = color(random(255), random(255), random(255), 200);
-  }
+   }
   }
 
   function draw() {
@@ -51,11 +46,11 @@
     // Draw webcam video
     // I noticed the webcam video is flipped by default, which feels confusing for players.
     // So I flipped the video horizontally, like a mirror, to make it easier to interact.
-    // https://editor.p5js.org/enickles/sketches/rJ9j1sx0M I learnt based on this example
-    push();  // Save current drawing settings
+    // https://editor.p5js.org/enickles/sketches/rJ9j1sx0M I learnt based on this example.
+    push();// Save current drawing settings
     translate(width, 0);// Move origin to right edge
-    scale(-1, 1); // Flip everything horizontally
-    pop(); // Restore drawing settings
+    scale(-1, 1);// Flip everything horizontally
+    pop();// Restore drawing settings
     
 
     // If big red heart is already shown, stop drawing small hearts
@@ -67,7 +62,7 @@
       fill("rgba(255, 255, 255, 0.8)");
       text("Click to Restart", width / 2, height / 2 + 80);
       
-      showRestartText = true; // I allow restart when clicked
+      showRestartText = true; // allow restart when clicked
       return; // Stop the rest of the draw() function
     }
 
@@ -87,7 +82,7 @@
       let mirroredX = width - finger.x; // Mirror X to match flipped video
       //https://editor.p5js.org/cs6240/sketches/0Z1Ao2t_Z this is the example of 
       // teaching how to flip hands pose position
-      fill("rgba(0, 255, 34, 1)"); // Green circle
+      fill("rgba(0, 255, 34, 1)");// Green circle
       noStroke();
       circle(mirroredX, finger.y, 30);
     }
@@ -134,7 +129,6 @@
       if ((d1 < 80 && d2 < 80) || (d3 < 80 && d4 < 80)) {// After testing different values, 150 seems to be the most reliable distance.
       // It allows the game to trigger easily, but still requires players to be close.
         isGameActive = true; //run the game
-        print("Game started!");
         heartbeat.play();//sound play when game start
       } 
     }
@@ -142,19 +136,21 @@
     // If game is active, show next stage
     if (isGameActive) {
       fill(255);
-      textAlign(CENTER);
+      textAlign(CENTER);//center text
       textSize(20);
       text("Move your hands closer together...", width / 2, height - 30);
       // I give players a hint that they can pinch to change the heart color
       fill("rgba(251, 251, 43, 1)");
       text("Don't like this color? Pinch it!", width / 2, 100);
-      if (hands.length >= 2) {
-        let hand1 = hands[0];
-        let hand2 = hands[1];
-        let index1 = hand1.index_finger_tip;
-        let index2 = hand2.index_finger_tip;
 
-    if (index1 && index2) {
+      // Only continue if both hands are detected
+      if (hands.length >= 2) {
+        let hand1 = hands[0]; // First detected hand
+        let hand2 = hands[1]; // Second detected hand
+        let index1 = hand1.index_finger_tip; // Index finger tip of first hand
+        let index2 = hand2.index_finger_tip; // Index finger tip of second hand
+
+    if (index1 && index2) { // Mirror the X coordinates to match the flipped video display
       let x1 = width - index1.x;
       let y1 = index1.y;
       let x2 = width - index2.x;
@@ -191,12 +187,12 @@
       // to change the circle to heart drawing
         
         // Mirror X positions to match flipped video
-        let thumbX = width - thumb.x; // 镜像 X 坐标
-        let indexX = width - index.x;
+        let thumbX = width - thumb.x; // Flip the X coordinate of the thumb tip to align with mirrored video
+        let indexX = width - index.x; // same as index
 
         // Calculate the midpoint between index and thumb
-        let centerX = (thumbX + indexX) / 2;
-        let centerY = (thumb.y + index.y) / 2;
+        let centerX = (thumbX + indexX) / 2; // Calculate the X coordinate of the center point between the thumb and index finger
+        let centerY = (thumb.y + index.y) / 2;// Calculate the Y coordinate of the center point between thumb and index
         
         // Calculate the pinch "distance" between finger and thumb
         let pinch = dist(thumbX, thumb.y, indexX, index.y);
@@ -208,7 +204,7 @@
       heartColors[i] = color(random(255), random(255), random(255), 200);
     }
     let colorVal = heartColors[i];
-    drawHeart(centerX, centerY, size, colorVal);
+    drawHeart(centerX, centerY, size, colorVal); // Draw a heart at the midpoint between thumb and index
       }  
     }    
   }  
@@ -221,11 +217,12 @@
   }
 
   function drawHeart(x, y, size, colorVal) {
-    fill(colorVal);
+    fill(colorVal); // Set the fill color of the heart
     strokeWeight(2);
-    beginShape();
+    beginShape(); // Start drawing a custom shape
     vertex(x, y);  // Top center point of heart
     //I Searched up online about some example of drawing heart and learnt about his function
+    //https://p5js.org/reference/p5/bezierVertex/
     bezierVertex(x + size / 2, y - size, x + size, y, x, y + size * 0.8); // Right half of the heart
     bezierVertex(x - size, y, x - size / 2, y - size, x, y);// Left half of the heart
     endShape(CLOSE); // Finish the shape
@@ -253,16 +250,16 @@
   function mousePressed() {
   // If final heart is shown, reset everything
   if (showRestartText) {
-    isGameActive = false;
-    isFinalHeartShown = false;
-    showRestartText = false;
+    isGameActive = false; // Lock the game again
+    isFinalHeartShown = false;// Hide the big red heart
+    showRestartText = false;// Hide the restart message
 
     // Stop the heartbeat sound
     if (heartbeat.isPlaying()) {
       heartbeat.stop();
     }
 
-    // Re-randomize heart colors
+    // Re randomize heart colors
     for (let i = 0; i < 2; i++) {
       heartColors[i] = color(random(255), random(255), random(255), 200);
     }
